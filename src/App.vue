@@ -45,7 +45,7 @@ body {
 
 a{
   text-decoration: none;
-  color: var(--cor-primaria)
+  color: var(--cor-secundaria)
 }
 
 img{
