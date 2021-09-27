@@ -2,7 +2,7 @@
     <section class="product-container">
         <Search/>
         <div v-if="produtos && produtos.length" class="products">
-            <div class="product" v-for="product in produtos" :key="product.id">
+            <div class="product" v-for="(product, index) in produtos" :key="index">
                 <router-link to="/">
                     <img v-if="product.fotos" :src="product.fotos[0].src" :alt="product.fotos[0].title">
                     <p class="preco">{{product.preco}}</p>
@@ -10,6 +10,7 @@
                     <p class="description">{{product.descricao}}</p>
                 </router-link>
             </div>
+            <Paginator :limitPeagina="limitProduct" :totalPagina="totalProduct"/>
         </div>
 
         <div v-else-if="produtos && produtos.length === 0">
@@ -23,14 +24,18 @@
 import {api} from '@/service/api.js'
 import Search from '@/components/Search.vue'
 import {serialize} from '@/helpers.js'
+import Paginator from '@/components/ProductPagination.vue'
+
 export default {
     components:{
-        Search
+        Search,
+        Paginator
     },
     data(){
         return{
             produtos:null,
-            limitProduct: 9
+            limitProduct: 4,
+            totalProduct: 0
         }
     },
     computed:{
@@ -45,6 +50,7 @@ export default {
         getProduct(){
             api.get(this.url)
             .then(resp => {
+                this.totalProduct = Number(resp.headers['x-total-count'])
                 this.produtos = resp.data
             })
         }

@@ -81,5 +81,22 @@ img{
   }
 }
 
+input, textarea{
+  border-radius: 4px;
+  border: 1px solid white;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(56, 176, 0, 0.4);
+  transition: all .3s;
+  font-size: 1rem;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 15px;
+}
+
+input:focus, input:hover, textarea:focus, textarea:hover{
+  outline: none;
+  box-shadow: 0 6px 12px rgba(56, 176, 0, 0.2);
+  border-color: var(--cor-secundaria);
+}
+
 
 </style>
