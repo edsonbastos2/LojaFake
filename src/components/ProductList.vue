@@ -1,22 +1,24 @@
 <template>
     <section class="product-container">
-        <Search/>
-        <div v-if="produtos && produtos.length" class="products">
-            <div class="product" v-for="(product, index) in produtos" :key="index">
-                <router-link to="/">
-                    <img v-if="product.fotos" :src="product.fotos[0].src" :alt="product.fotos[0].title">
-                    <p class="preco">{{product.preco}}</p>
-                    <h2 class="title">{{product.nome}}</h2>
-                    <p class="description">{{product.descricao}}</p>
-                </router-link>
+            <Search/>
+        <transition mode="out-in">
+            <div v-if="produtos && produtos.length" class="products" key="produtos">
+                <div class="product" v-for="(product, index) in produtos" :key="index">
+                    <router-link to="/">
+                        <img v-if="product.fotos" :src="product.fotos[0].src" :alt="product.fotos[0].title">
+                        <p class="preco">{{product.preco}}</p>
+                        <h2 class="title">{{product.nome}}</h2>
+                        <p class="description">{{product.descricao}}</p>
+                    </router-link>
+                </div>
+                <PaginationProduct :produtosTotal="produtoTotal" :produtosPorPagina="limitProduct"/>
             </div>
-            <Paginator :limitPeagina="limitProduct" :totalPagina="totalProduct"/>
-        </div>
 
-        <div v-else-if="produtos && produtos.length === 0">
-            <p class="zeroProduto">Busca sem resultado. Tente buscar outro termo.</p>
-        </div>
-
+            <div v-else-if="produtos && produtos.length === 0" key="sem-resultado">
+                <p class="zeroProduto">Busca sem resultado. Tente buscar outro termo.</p>
+            </div>
+            <Loading v-else key="loading"/>
+        </transition>
     </section>
 </template>
 
@@ -24,23 +26,22 @@
 import {api} from '@/service/api.js'
 import Search from '@/components/Search.vue'
 import {serialize} from '@/helpers.js'
-import Paginator from '@/components/ProductPagination.vue'
+import PaginationProduct from '@/components/PaginationProduct.vue'
 
 export default {
     components:{
         Search,
-        Paginator
+        PaginationProduct
     },
     data(){
         return{
             produtos:null,
-            limitProduct: 4,
-            totalProduct: 0
+            limitProduct: 9,
+            produtoTotal: 0
         }
     },
     computed:{
         url(){
-
             //Montando uma string para passar como paramentro
             const query = serialize(this.$route.query)
             return `/produto?_limit=${this.limitProduct}${query}`
@@ -48,11 +49,16 @@ export default {
     },
     methods:{
         getProduct(){
-            api.get(this.url)
-            .then(resp => {
-                this.totalProduct = Number(resp.headers['x-total-count'])
-                this.produtos = resp.data
-            })
+            this.produtos = null
+            setTimeout(() => {
+                api.get(this.url)
+                .then(resp => {
+                    this.produtoTotal = Number(resp.headers['x-total-count'])
+                    console.log(resp)
+                    this.produtos = resp.data
+                }) 
+
+            }, 1500)
         }
     },
     watch:{
@@ -117,5 +123,6 @@ export default {
     .zeroProduto{
         text-align: center;
     }
+
 }
 </style>
