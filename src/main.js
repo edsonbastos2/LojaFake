@@ -6,6 +6,7 @@ import Loading from '@/components/Loading.vue'
 
 
 const Vue = createApp(App)
+
 Vue.component("Loading", Loading)
 Vue.use(store)
 Vue.use(router)

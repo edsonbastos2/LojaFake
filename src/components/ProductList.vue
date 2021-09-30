@@ -4,16 +4,15 @@
         <transition mode="out-in">
             <div v-if="produtos && produtos.length" class="products" key="produtos">
                 <div class="product" v-for="(product, index) in produtos" :key="index">
-                    <router-link to="/">
+                    <router-link :to="{name:'produto', params:{id: product.id}}">
                         <img v-if="product.fotos" :src="product.fotos[0].src" :alt="product.fotos[0].title">
-                        <p class="preco">{{product.preco}}</p>
+                        <p class="preco">{{numeroPreco(product.preco)}}</p>
                         <h2 class="title">{{product.nome}}</h2>
                         <p class="description">{{product.descricao}}</p>
                     </router-link>
                 </div>
                 <PaginationProduct :produtosTotal="produtoTotal" :produtosPorPagina="limitProduct"/>
             </div>
-
             <div v-else-if="produtos && produtos.length === 0" key="sem-resultado">
                 <p class="zeroProduto">Busca sem resultado. Tente buscar outro termo.</p>
             </div>
@@ -45,6 +44,19 @@ export default {
             //Montando uma string para passar como paramentro
             const query = serialize(this.$route.query)
             return `/produto?_limit=${this.limitProduct}${query}`
+        },
+        numeroPreco(){
+            return (valor) =>{
+                valor = Number(valor)
+                if(!isNaN(valor)){
+                   return valor.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    })
+                }
+
+                return valor
+            }
         }
     },
     methods:{

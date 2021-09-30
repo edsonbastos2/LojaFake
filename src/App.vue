@@ -98,12 +98,12 @@ input:focus, input:hover, textarea:focus, textarea:hover{
   border-color: var(--cor-secundaria);
 }
 
-.v-enter,
+.v-enter-from,
 .v-leave-to{
   opacity: 0;
 }
 
-.v-enter{
+.v-enter-to{
   transform: translate3d(0, -20px, 0);
 }
 .v-leave-to{
