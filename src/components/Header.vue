@@ -4,7 +4,8 @@
             <router-link to="/" class="logo">
                 <h1>LogoDaLoja</h1>
             </router-link>
-            <router-link class="btn" to="/login">
+            <router-link class="btn" v-if="$store.state.login" to="/perfil">{{nome}}</router-link>
+            <router-link v-else class="btn" to="/login">
                 Vender | Login
             </router-link>
         </nav>
@@ -12,7 +13,13 @@
 </template>
 
 <script>
-export default {}
+export default {
+    computed:{
+        nome(){
+            return this.$store.state.usuario.nome
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>

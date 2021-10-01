@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1>👍Compre ou Venda🤑</h1>
+    <h1>Sua loja de Games</h1>
     <ProductList/>
   </section>
 </template>

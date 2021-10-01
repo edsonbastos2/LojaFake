@@ -2,7 +2,9 @@
 <div id="root">
   <Header/>
     <main id="main">
-      <router-view />
+      <transition name="out-in" enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
+        <router-view />
+      </transition>
     </main>
   <Footer/>
 </div>
@@ -97,22 +99,4 @@ input:focus, input:hover, textarea:focus, textarea:hover{
   box-shadow: 0 6px 12px rgba(56, 176, 0, 0.2);
   border-color: var(--cor-secundaria);
 }
-
-.v-enter-from,
-.v-leave-to{
-  opacity: 0;
-}
-
-.v-enter-to{
-  transform: translate3d(0, -20px, 0);
-}
-.v-leave-to{
-  transform: translate3d(0, 20px, 0);
-}
-
-.v-enter-active,
-.v-leave-active{
-  transition: all 0.3s;
-}
-
 </style>
